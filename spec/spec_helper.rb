@@ -1,4 +1,10 @@
 require 'byebug'
+require 'redis'
+
+RSpec.shared_context 'redis' do
+  let(:redis) { Redis.new }
+  before { redis.flushall }
+end
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -12,4 +18,6 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.example_status_persistence_file_path = "spec/examples.txt"
   config.warnings = true
+
+  config.include_context 'redis'
 end
