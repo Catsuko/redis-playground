@@ -6,19 +6,18 @@ class RingBuffer
     @capacity = capacity
   end
 
-  def test
-    @store.get(@key).tap do
-      @store.set(@key, 1)
-    end
-  end
-
   def add(item)
+    @store.multi do |transaction|
+      transaction.lpush(@key, item)
+      transaction.ltrim(@key, 0, @capacity - 1)
+    end
   end
 
   def delete(item)
   end
 
-  def includes?(item)
+  def include?(item)
+    !@store.lpos(@key, item, maxlen: @capacity).nil?
   end
 
   def clear
