@@ -27,6 +27,27 @@ RSpec.describe RingBuffer do
         expect(larger_buffer).not_to include(0)
       end
     end
+
+    context 'when adding multiple items' do
+      let(:first_item) { 1 }
+      let(:second_item) { 2 }
+      let(:capacity) { 3 }
+
+      it 'accepts multiple arguments' do
+        buffer.add(first_item, second_item)
+        expect(buffer).to include(first_item)
+        expect(buffer).to include(second_item)
+      end
+
+      it 'does not add more than the capacity' do
+        items = (capacity * 2).times.to_a
+        subject.add(*items)
+        items.last(capacity).each do |n|
+          expect(buffer).to include(n)
+        end
+        expect(buffer).not_to include(items.first)
+      end
+    end
   end
 
   describe '#delete' do
@@ -54,6 +75,22 @@ RSpec.describe RingBuffer do
     it 'removes all occurences of item from buffer' do
       capacity.times { buffer.add(item) }
       expect { subject }.to change { buffer.include?(item) }.from(true).to(false)
+    end
+  end
+
+  describe '#peek' do
+    before { buffer.add('a', 'b', 'c') }
+
+    it 'returns first item when called without `n`' do
+      expect(buffer.peek).to contain_exactly('a')
+    end
+
+    it 'returns multiple items' do
+      expect(buffer.peek(2)).to contain_exactly('a', 'b')
+    end
+
+    it 'returns all items when `n` is at or above the capacity' do
+      expect(buffer.peek(100)).to contain_exactly('a', 'b', 'c')
     end
   end
 

@@ -7,15 +7,15 @@ class RingBuffer
     @capacity = capacity
   end
 
-  # TODO: Implement peek -> get first `n` items from buffer as enumerator
-  def peek(n = 1)
+  def peek(n = 1, &block)
+    items = @store.lrange(@key, 0, n.clamp(1, @capacity) - 1)
+    items.each(&block)
   end
 
-  # TODO: Allow add to accept multiple items
-  def add(item)
+  def add(*items)
     tap do
       @store.multi do |transaction|
-        transaction.lpush(@key, item)
+        transaction.lpush(@key, items.last(@capacity).reverse)
         transaction.ltrim(@key, 0, @capacity - 1)
       end
     end
