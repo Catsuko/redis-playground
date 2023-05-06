@@ -27,7 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug!
-  redis!
+  redis (~> 5.0)!
   rspec!
 
 BUNDLED WITH
