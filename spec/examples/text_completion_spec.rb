@@ -30,6 +30,11 @@ RSpec.describe TextCompletion do
       expect(completion.suggest(text)).to contain_exactly(text)
     end
 
+    it 'does not suggest searches with less than 3 characters' do
+      completion.notice('a').notice(' a ').notice('a             a')
+      expect(completion.suggest('a')).to match []
+    end
+
   end
 
 end

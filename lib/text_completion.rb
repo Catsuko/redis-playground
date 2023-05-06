@@ -13,7 +13,11 @@ class TextCompletion
 
   def notice(terms)
     tap do
-      @store.eval(new_or_increment_script, [@key], [terms.delete(':')])
+      if terms.match?(/\w{3,}/)
+        processed_terms = terms.delete(':')
+        processed_terms.strip!
+        @store.eval(new_or_increment_script, [@key], [processed_terms])
+      end
     end
   end
 
