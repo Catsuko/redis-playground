@@ -12,6 +12,11 @@ RSpec.describe TextCompletion do
       is_expected.to match []
     end
 
+    it 'does not provide suggestions when input text is blank' do
+      completion.notice('advance').notice('artist').notice('ark')
+      expect(completion.suggest('')).to match []
+    end
+
     it 'returns similar terms that were previously noticed' do
       completion.notice('cat').notice('mouse').notice('deer')
       similar_terms = %w(doggy doge dogger dogod)

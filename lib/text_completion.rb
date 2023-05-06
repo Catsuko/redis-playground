@@ -7,6 +7,8 @@ class TextCompletion
   end
 
   def suggest(text, limit: 10)
+    return [] unless terms.match?(/\w+/)
+
     @store.zrange(@key, "[#{text}", "[#{text}\xff", limit: [0, limit], bylex: true)
       .map { |suggestion| suggestion[/.*:/m].chop! }
       .compact
@@ -24,7 +26,7 @@ class TextCompletion
   end
 
   def inspect
-    "#<#{self.class} #{@key}>"
+    "#{self.class}:#{@key}"
   end
 
 private
