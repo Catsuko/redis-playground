@@ -35,6 +35,22 @@ RSpec.describe TextCompletion do
       expect(completion.suggest('a')).to match []
     end
 
+    it 'purges an older suggestion when noticing new terms' do
+      old_suggestions = %w(apple adam ample arbiter after artsy adder another assume augment)
+      old_suggestions.each { |t| completion.notice(t) }
+      completion.notice('bambi')
+      suggestions = completion.suggest('a')
+      expect(suggestions.size).to eq old_suggestions.size - 1
+      expect(suggestions.all? { |s| old_suggestions.include?(s) }).to be true
+    end
+
+    it 'does not purge older popular suggestions' do
+      2.times { completion.notice(text) }
+      always_purge_completion = described_class.new(redis, key: 'test_completion', purge_threshold: 1)
+      always_purge_completion.notice('cat')
+      expect(always_purge_completion.suggest(text)).to contain_exactly(text)
+    end
+
   end
 
 end
