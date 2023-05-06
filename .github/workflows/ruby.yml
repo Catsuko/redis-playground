@@ -24,9 +24,6 @@ jobs:
       matrix:
         ruby-version: ['2.7']
 
-    env:
-      REDIS_HOST: redis
-
     services:
       redis:
         image: redis
@@ -49,4 +46,6 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
+      env:
+        REDIS_URL: redis://localhost:6379/0
       run: bundle exec rspec
