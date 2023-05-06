@@ -25,6 +25,11 @@ RSpec.describe TextCompletion do
       expect(completion.suggest(text, limit: 1)).to contain_exactly(similar_terms.first)
     end
 
+    it 'removes the delimiter from terms if present' do
+      completion.notice(text + ':')
+      expect(completion.suggest(text)).to contain_exactly(text)
+    end
+
   end
 
 end
