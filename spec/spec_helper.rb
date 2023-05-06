@@ -2,7 +2,7 @@ require 'byebug'
 require 'redis'
 
 RSpec.shared_context 'redis' do
-  let(:redis) { Redis.new }
+  let(:redis) { Redis.new(host: ENV.fetch('REDIS_HOST', 'localhost')) }
   before { redis.flushall }
 end
 
