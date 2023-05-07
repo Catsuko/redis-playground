@@ -21,6 +21,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.0)
+    timecop (0.9.6)
 
 PLATFORMS
   x64-mingw32
@@ -30,6 +31,7 @@ DEPENDENCIES
   byebug!
   redis (~> 5.0)!
   rspec!
+  timecop!
 
 BUNDLED WITH
    2.2.7
