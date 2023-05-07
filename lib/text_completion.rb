@@ -25,10 +25,6 @@ class TextCompletion
     end
   end
 
-  def inspect
-    "#{self.class}:#{@key}"
-  end
-
 private
 
   def purge_old_suggestion
@@ -49,7 +45,7 @@ private
   end
 
   def notice_term_script
-    @notice_term_script ||= %Q(
+    %Q(
       local term = ARGV[1]
       local index_key = KEYS[1]
       local record = redis.call("zrange", index_key, "[" .. term .. ":", "[" .. term .. ":\xff", "BYLEX", "LIMIT", 0, 1)[1]
