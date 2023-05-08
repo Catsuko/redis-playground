@@ -53,4 +53,18 @@ RSpec.describe BloomFilter do
     end
   end
 
+  describe '#full?' do
+    let(:capacity) { 1 }
+    subject { bloom_filter.full? }
+
+    it 'returns true when all hash values have been added' do
+      bloom_filter.add('mouse')
+      expect(bloom_filter).to be_full
+    end
+
+    it 'returns false when some hash values remain' do
+      expect(bloom_filter).not_to be_full 
+    end
+  end
+
 end

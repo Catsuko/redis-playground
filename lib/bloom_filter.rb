@@ -1,6 +1,6 @@
 class BloomFilter
 
-  def initialize(store, key:, capacity: 1000)
+  def initialize(store, key:, capacity: 10_000)
     @store = store
     @key = key
     @capacity = capacity
@@ -18,6 +18,10 @@ class BloomFilter
 
   def clear
     tap { @store.del(@key) }
+  end
+
+  def full?
+    @store.bitcount(@key) >= @capacity
   end
 
 private
